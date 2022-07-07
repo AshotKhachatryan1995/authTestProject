@@ -2,6 +2,7 @@ import 'package:auth_test_project/blocs/authentication/authentication_bloc.dart'
 import 'package:auth_test_project/blocs/authentication/authentication_event.dart';
 import 'package:auth_test_project/blocs/authentication/authentication_state.dart';
 import 'package:auth_test_project/screens/home_screen.dart';
+import 'package:auth_test_project/screens/login_registration_screen.dart';
 import 'package:auth_test_project/screens/registration_screen.dart';
 import 'package:auth_test_project/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +37,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Theme(
         data: ThemeData.light(),
         child: MaterialApp(
-            home: _mainRoute(state), onGenerateRoute: (settings) {}));
+            home: _mainRoute(state),
+            onGenerateRoute: (settings) {
+              return null;
+            }));
   }
 
   Widget _mainRoute(AuthenticationState state) {
     if (state is UnAuthenticatedState) {
-      return const RegistrationScreen();
+      return const LoginRegistrationScreen();
     }
 
     if (state is AuthenticatedState) {
