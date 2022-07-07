@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 
-class RegistrationControllers {
+class LoginControllers {
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
 
   bool get areNotEmpty =>
-      loginController.text.isNotEmpty &&
-      passwordController.text.isNotEmpty &&
-      nameController.text.isNotEmpty;
+      loginController.text.isNotEmpty && passwordController.text.isNotEmpty;
 
   void dispose() {
     loginController.dispose();
     passwordController.dispose();
-    nameController.dispose();
   }
 }

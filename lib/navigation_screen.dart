@@ -3,6 +3,7 @@ import 'package:auth_test_project/blocs/authentication/authentication_event.dart
 import 'package:auth_test_project/blocs/authentication/authentication_state.dart';
 import 'package:auth_test_project/screens/home_screen.dart';
 import 'package:auth_test_project/screens/login_registration_screen.dart';
+import 'package:auth_test_project/screens/login_screen.dart';
 import 'package:auth_test_project/screens/registration_screen.dart';
 import 'package:auth_test_project/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
               if (settings.name == '/logIn') {
                 return MaterialPageRoute(
-                    builder: (context) => const HomeScreen());
+                    builder: (context) => const LoginScreen());
               }
               assert(false, 'Need to implement ${settings.name}');
               return null;
