@@ -1,3 +1,5 @@
+import 'package:auth_test_project/blocs/authentication/authentication_bloc.dart';
+import 'package:auth_test_project/blocs/authentication/authentication_event.dart';
 import 'package:auth_test_project/blocs/registration/registration_bloc.dart';
 import 'package:auth_test_project/blocs/registration/registration_event.dart';
 import 'package:auth_test_project/blocs/registration/registration_state.dart';
@@ -37,31 +39,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<RegistrationBloc>(
         create: (context) => _registrationBloc,
-        child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Scaffold(
-                backgroundColor: Colors.white,
-                body: SafeArea(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                      Column(children: [
-                        TextFieldWidget(
-                            controller: _controllers.nameController,
-                            hintText: 'enter your name',
-                            onChanged: _onChanged),
-                        TextFieldWidget(
-                            controller: _controllers.loginController,
-                            hintText: 'enter login',
-                            onChanged: _onChanged),
-                        TextFieldWidget(
-                            controller: _controllers.passwordController,
-                            hintText: 'enter password',
-                            obscureText: true,
-                            onChanged: _onChanged)
-                      ]),
-                      _renderSignUpButton()
-                    ])))));
+        child: BlocListener<RegistrationBloc, RegistrationState>(
+            listener: _listener,
+            child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Scaffold(
+                    backgroundColor: Colors.white,
+                    body: SafeArea(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                          Column(children: [
+                            TextFieldWidget(
+                                controller: _controllers.nameController,
+                                hintText: 'enter your name',
+                                onChanged: _onChanged),
+                            TextFieldWidget(
+                                controller: _controllers.loginController,
+                                hintText: 'enter login',
+                                onChanged: _onChanged),
+                            TextFieldWidget(
+                                controller: _controllers.passwordController,
+                                hintText: 'enter password',
+                                obscureText: true,
+                                onChanged: _onChanged)
+                          ]),
+                          _renderSignUpButton()
+                        ]))))));
   }
 
   Widget _renderSignUpButton() {
@@ -78,8 +82,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 }
 
 extension _RegistrationScreenStateAddition on _RegistrationScreenState {
-  Color color(bool isActive) => isActive ? Colors.black : Colors.white;
-
   void _onChanged(String val) => _registrationBloc
       .add(TextFieldValueChangedEvent(controllers: _controllers));
 
@@ -88,6 +90,13 @@ extension _RegistrationScreenStateAddition on _RegistrationScreenState {
       return;
     }
 
-    _registrationBloc.add(CreateNewUserEvent(controllers: _controllers));
+    _registrationBloc.add(CreateUserEvent(controllers: _controllers));
+  }
+
+  void _listener(context, state) {
+    if (state is UserCreatedSuccessfullyState) {
+      BlocProvider.of<AuthenticationBLoc>(context)
+          .add(AddNewUserEvent(userId: state.userId));
+    }
   }
 }

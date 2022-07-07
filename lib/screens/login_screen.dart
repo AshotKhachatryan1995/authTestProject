@@ -73,8 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 extension _LoginScreenStateAddition on _LoginScreenState {
-  Color color(bool isActive) => isActive ? Colors.black : Colors.white;
-
   void _onChanged(String val) =>
       _loginBloc.add(TextFieldValueChangedEvent(controllers: _controllers));
 

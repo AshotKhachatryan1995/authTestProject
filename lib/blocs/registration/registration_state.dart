@@ -25,3 +25,11 @@ class CreateNewUserState extends RegistrationState {
   @override
   List<Object> get props => [user];
 }
+
+class UserCreatedSuccessfullyState extends RegistrationState {
+  UserCreatedSuccessfullyState({required this.userId});
+  final String userId;
+
+  @override
+  List<Object> get props => [userId];
+}

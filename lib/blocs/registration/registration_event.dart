@@ -18,8 +18,8 @@ class TextFieldValueChangedEvent extends RegistrationEvent {
   List<Object> get props => [controllers];
 }
 
-class CreateNewUserEvent extends RegistrationEvent {
-  const CreateNewUserEvent({required this.controllers});
+class CreateUserEvent extends RegistrationEvent {
+  const CreateUserEvent({required this.controllers});
   final RegistrationControllers controllers;
 
   @override
