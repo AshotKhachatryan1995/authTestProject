@@ -10,3 +10,5 @@ abstract class HomeEvent extends Equatable {
 class InitialEvent extends HomeEvent {}
 
 class LoadUserEvent extends HomeEvent {}
+
+class LoadDataEvent extends HomeEvent {}
