@@ -39,6 +39,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: MaterialApp(
             home: _mainRoute(state),
             onGenerateRoute: (settings) {
+              if (settings.name == '/signUp') {
+                return MaterialPageRoute(
+                    builder: (context) => const RegistrationScreen());
+              }
+
+              if (settings.name == '/logIn') {
+                return MaterialPageRoute(
+                    builder: (context) => const HomeScreen());
+              }
+              assert(false, 'Need to implement ${settings.name}');
               return null;
             }));
   }

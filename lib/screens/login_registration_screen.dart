@@ -24,9 +24,10 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
   }
 
   Widget _renderButton({required LoginType loginType}) {
-    return TextButton(
-        onPressed: () => Navigator.pushNamed(context, loginType.routeName()),
-        child: Align(
+    return Align(
+        child: TextButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, loginType.routeName()),
             child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
