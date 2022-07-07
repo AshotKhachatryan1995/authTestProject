@@ -37,27 +37,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
         create: (context) => _loginBloc,
-        child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Scaffold(
-                backgroundColor: Colors.white,
-                body: SafeArea(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                      Column(children: [
-                        TextFieldWidget(
-                            controller: _controllers.loginController,
-                            hintText: 'enter login',
-                            onChanged: _onChanged),
-                        TextFieldWidget(
-                            controller: _controllers.passwordController,
-                            hintText: 'enter password',
-                            obscureText: true,
-                            onChanged: _onChanged)
-                      ]),
-                      _renderSignInButton()
-                    ])))));
+        child: BlocListener<LoginBloc, LoginState>(
+            listener: _listener,
+            child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Scaffold(
+                    backgroundColor: Colors.white,
+                    body: SafeArea(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                          Column(children: [
+                            TextFieldWidget(
+                                controller: _controllers.loginController,
+                                hintText: 'enter login',
+                                onChanged: _onChanged),
+                            TextFieldWidget(
+                                controller: _controllers.passwordController,
+                                hintText: 'enter password',
+                                obscureText: true,
+                                onChanged: _onChanged)
+                          ]),
+                          _renderSignInButton()
+                        ]))))));
   }
 
   Widget _renderSignInButton() {
@@ -65,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final isActive = (state is ButtonState) ? state.isActive : false;
 
       return CenteredButtonWidget(
+        title: 'Log In',
         isActive: isActive,
         onPressed: () => _onSignIn(isActive),
       );
@@ -82,5 +85,11 @@ extension _LoginScreenStateAddition on _LoginScreenState {
     }
 
     _loginBloc.add(UserSignInEvent(controllers: _controllers));
+  }
+
+  void _listener(context, state) {
+    if (state is UserSignInSuccessfullyState) {
+      Navigator.pushNamed(context, '/home');
+    }
   }
 }

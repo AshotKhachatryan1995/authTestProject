@@ -27,6 +27,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   @override
+  void dispose() {
+    _authBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBLoc>(
         create: (context) => _authBloc,
@@ -40,6 +46,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: MaterialApp(
             home: _mainRoute(state),
             onGenerateRoute: (settings) {
+              if (settings.name == '/') {
+                return MaterialPageRoute(
+                    builder: (context) => _mainRoute(state));
+              }
               if (settings.name == '/signUp') {
                 return MaterialPageRoute(
                     builder: (context) => const RegistrationScreen());
@@ -49,6 +59,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 return MaterialPageRoute(
                     builder: (context) => const LoginScreen());
               }
+
+              if (settings.name == '/home') {
+                return MaterialPageRoute(
+                    builder: (context) => const HomeScreen());
+              }
+
               assert(false, 'Need to implement ${settings.name}');
               return null;
             }));
@@ -56,7 +72,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   Widget _mainRoute(AuthenticationState state) {
     if (state is UnAuthenticatedState) {
-      return const LoginRegistrationScreen();
+      return Builder(builder: (context) {
+        WidgetsBinding.instance.addPostFrameCallback(
+            (_) => Navigator.popUntil(context, (route) => route.isFirst));
+
+        return const LoginRegistrationScreen();
+      });
     }
 
     if (state is AuthenticatedState) {

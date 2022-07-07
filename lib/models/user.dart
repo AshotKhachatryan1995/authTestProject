@@ -1,25 +1,28 @@
-import 'package:auth_test_project/controllers/registration_controllers.dart';
-import 'package:uuid/uuid.dart';
+import 'package:hive/hive.dart';
 
-class User {
-  User({
-    required this.id,
-    required this.name,
-    required this.login,
-    required this.password,
-    required this.registrTime,
-  });
+part 'user.g.dart';
 
-  final String id;
-  final String name;
-  final String login;
-  final String password;
-  final DateTime registrTime;
+@HiveType(typeId: 1)
+class User extends HiveObject {
+  @HiveField(0)
+  late String id;
 
-  factory User.fromControllers(RegistrationControllers controllers) => User(
-      id: const Uuid().v4(),
-      name: controllers.nameController.text,
-      login: controllers.loginController.text,
-      password: controllers.passwordController.text,
-      registrTime: DateTime.now());
+  @HiveField(1)
+  late String name;
+
+  @HiveField(2)
+  late String login;
+
+  @HiveField(3)
+  late String password;
+
+  @HiveField(4)
+  late DateTime registrationDate;
+
+  User(
+      {required this.id,
+      required this.name,
+      required this.login,
+      required this.password,
+      required this.registrationDate});
 }

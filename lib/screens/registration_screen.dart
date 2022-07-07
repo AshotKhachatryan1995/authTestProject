@@ -1,5 +1,3 @@
-import 'package:auth_test_project/blocs/authentication/authentication_bloc.dart';
-import 'package:auth_test_project/blocs/authentication/authentication_event.dart';
 import 'package:auth_test_project/blocs/registration/registration_bloc.dart';
 import 'package:auth_test_project/blocs/registration/registration_event.dart';
 import 'package:auth_test_project/blocs/registration/registration_state.dart';
@@ -74,6 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       final isActive = (state is ButtonState) ? state.isActive : false;
 
       return CenteredButtonWidget(
+        title: 'Sign Up',
         isActive: isActive,
         onPressed: () => _onSignUp(isActive),
       );
@@ -95,8 +94,7 @@ extension _RegistrationScreenStateAddition on _RegistrationScreenState {
 
   void _listener(context, state) {
     if (state is UserCreatedSuccessfullyState) {
-      BlocProvider.of<AuthenticationBLoc>(context)
-          .add(AddNewUserEvent(userId: state.userId));
+      Navigator.pushNamed(context, '/home');
     }
   }
 }
