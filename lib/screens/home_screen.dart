@@ -8,6 +8,7 @@ import 'package:auth_test_project/models/user.dart';
 import 'package:auth_test_project/repositories/api_repository_impl.dart';
 import 'package:auth_test_project/shared/bottom_navigation_widget.dart';
 import 'package:auth_test_project/shared/centered_button_widget.dart';
+import 'package:auth_test_project/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,23 +53,26 @@ class _HomeScreenState extends State<HomeScreen> {
         onWillPop: () async => false,
         child: BlocProvider<HomeBloc>(
             create: (context) => _homeBloc,
-            child: BlocListener<HomeBloc, HomeState>(
+            child: BlocConsumer<HomeBloc, HomeState>(
                 listener: _listener,
-                child: ValueListenableBuilder(
-                    valueListenable: _selectedNavItemIndex,
-                    builder: (context, int index, child) => Scaffold(
-                        backgroundColor: Colors.white,
-                        bottomNavigationBar: BottomNavigationWidget(
-                          index: index,
-                          onTap: _onTap,
-                        ),
-                        body: SafeArea(
-                            child: PageView.builder(
-                                controller: _pageController,
-                                itemCount: NavigationType.values.length,
-                                itemBuilder: _itemBuilder,
-                                onPageChanged: (index) =>
-                                    _selectedNavItemIndex.value = index)))))));
+                builder: (context, state) => LoadingWidget(
+                    isLoading: state is LoadingState,
+                    child: ValueListenableBuilder(
+                        valueListenable: _selectedNavItemIndex,
+                        builder: (context, int index, child) => Scaffold(
+                            backgroundColor: Colors.white,
+                            bottomNavigationBar: BottomNavigationWidget(
+                              index: index,
+                              onTap: _onTap,
+                            ),
+                            body: SafeArea(
+                                child: PageView.builder(
+                                    controller: _pageController,
+                                    itemCount: NavigationType.values.length,
+                                    itemBuilder: _itemBuilder,
+                                    onPageChanged: (index) =>
+                                        _selectedNavItemIndex.value =
+                                            index))))))));
   }
 
   Widget _itemBuilder(context, index) {

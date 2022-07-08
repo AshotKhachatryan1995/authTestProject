@@ -5,7 +5,6 @@ import 'package:auth_test_project/screens/home_screen.dart';
 import 'package:auth_test_project/screens/login_registration_screen.dart';
 import 'package:auth_test_project/screens/login_screen.dart';
 import 'package:auth_test_project/screens/registration_screen.dart';
-import 'package:auth_test_project/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -84,6 +83,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
       return const HomeScreen();
     }
 
-    return const LoadingWidget();
+    return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(child: CircularProgressIndicator()));
   }
 }

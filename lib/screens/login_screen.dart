@@ -3,6 +3,7 @@ import 'package:auth_test_project/blocs/login/login_event.dart';
 import 'package:auth_test_project/blocs/login/login_state.dart';
 import 'package:auth_test_project/controllers/login_controllers.dart';
 import 'package:auth_test_project/shared/centered_button_widget.dart';
+import 'package:auth_test_project/shared/loading_widget.dart';
 import 'package:auth_test_project/shared/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,29 +38,32 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
         create: (context) => _loginBloc,
-        child: BlocListener<LoginBloc, LoginState>(
+        child: BlocConsumer<LoginBloc, LoginState>(
             listener: _listener,
-            child: GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: Scaffold(
-                    backgroundColor: Colors.white,
-                    body: SafeArea(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                          Column(children: [
-                            TextFieldWidget(
-                                controller: _controllers.loginController,
-                                hintText: 'enter login',
-                                onChanged: _onChanged),
-                            TextFieldWidget(
-                                controller: _controllers.passwordController,
-                                hintText: 'enter password',
-                                obscureText: true,
-                                onChanged: _onChanged)
-                          ]),
-                          _renderSignInButton()
-                        ]))))));
+            builder: (context, state) => LoadingWidget(
+                isLoading: state is LoadingState,
+                child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Scaffold(
+                        backgroundColor: Colors.white,
+                        body: SafeArea(
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                              Column(children: [
+                                TextFieldWidget(
+                                    controller: _controllers.loginController,
+                                    hintText: 'enter login',
+                                    onChanged: _onChanged),
+                                TextFieldWidget(
+                                    controller: _controllers.passwordController,
+                                    hintText: 'enter password',
+                                    obscureText: true,
+                                    onChanged: _onChanged)
+                              ]),
+                              _renderSignInButton()
+                            ])))))));
   }
 
   Widget _renderSignInButton() {

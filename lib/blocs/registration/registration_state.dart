@@ -29,3 +29,5 @@ class CreateNewUserState extends RegistrationState {
 class UserCreatedSuccessfullyState extends RegistrationState {}
 
 class UserCreateInvalidState extends RegistrationState {}
+
+class UserAlreadyExists extends RegistrationState {}

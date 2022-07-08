@@ -1,5 +1,6 @@
 import 'package:auth_test_project/blocs/login/login_event.dart';
 import 'package:auth_test_project/blocs/login/login_state.dart';
+import 'package:auth_test_project/extensions/string_extension.dart';
 import 'package:auth_test_project/models/user.dart';
 import 'package:auth_test_project/preferance/shared_preferance.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,14 +25,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onUserSignInEvent(
       UserSignInEvent event, Emitter<LoginState> emit) async {
+    emit(LoadingState());
     final box = await Hive.openBox<User>('users_db');
 
     final login = event.controllers.loginController.text;
     final password = event.controllers.passwordController.text;
-    final user = box.values.where((user) => user.login == login).toList().first;
-    await box.close();
+    final users = box.values.where((user) => user.login == login).toList();
 
-    if (user.password == password) {
+    if (users.isEmpty) {
+      emit(UserSignInInvalidState());
+      return;
+    }
+
+    final user = users.first;
+
+    if (user.password == password.generateMd5()) {
       await _sharedPrefs.setString('userId', user.id);
 
       emit(UserSignInSuccessfullyState());
